@@ -1,3 +1,5 @@
+import { months } from './site';
+
 declare const __LAST_UPDATED__: string; // YYYY-MM, set in astro.config.mjs
 
 // Typographic quotes for strings that do not go through the Markdown renderer (frontmatter,
@@ -36,13 +38,14 @@ export function inlineHtml(rendered: { html: string } | undefined): string {
   return bodyHtml(rendered).replace(/^<p>([\s\S]*)<\/p>$/, '$1');
 }
 
-// Gutter dates from YYYY-MM: "2026–", "2026", "2024–26".
+// Gutter dates from YYYY-MM, in the CV's style: "Oct 2026 –", "Mar–Jul 2026", "Sep 2024 – Jul 2027".
 export function gutterDate(start: string, end?: string): string {
-  const from = start.slice(0, 4);
-  if (!end) return `${from}–`;
-  const to = end.slice(0, 4);
-  if (to === from) return from;
-  return `${from}–${to.slice(0, 2) === from.slice(0, 2) ? to.slice(2) : to}`;
+  const [fromYear, fromMonth] = [start.slice(0, 4), months[Number(start.slice(5, 7)) - 1]];
+  if (!end) return `${fromMonth} ${fromYear} –`;
+  const [toYear, toMonth] = [end.slice(0, 4), months[Number(end.slice(5, 7)) - 1]];
+  if (toYear !== fromYear) return `${fromMonth} ${fromYear} – ${toMonth} ${toYear}`;
+  if (toMonth === fromMonth) return `${fromMonth} ${fromYear}`;
+  return `${fromMonth}–${toMonth} ${fromYear}`;
 }
 
 // "A", "A and B", "A, B and C".

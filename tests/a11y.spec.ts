@@ -111,6 +111,26 @@ test.describe('layout', () => {
     });
   }
 
+  for (const width of [375, 1280]) {
+    test(`gutter dates fit on one line at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 800 });
+      await page.goto('/');
+      await settle(page);
+      const misfits = await page.evaluate(() =>
+        [...document.querySelectorAll<HTMLElement>('.when')].flatMap((el) => {
+          const style = getComputedStyle(el);
+          const room = el.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+          const range = document.createRange();
+          range.selectNodeContents(el);
+          const lines = new Set([...range.getClientRects()].map((r) => Math.round(r.top))).size;
+          const text = range.getBoundingClientRect().width;
+          return text > room + 0.5 || lines > 1 ? [`${el.textContent} (${text.toFixed(0)}px in ${room.toFixed(0)}px)`] : [];
+        }),
+      );
+      expect(misfits).toEqual([]);
+    });
+  }
+
   test('200% zoom (1280px window): no horizontal scroll, text at full size, mobile layout', async ({ browser, baseURL }) => {
     const context = await browser.newContext({ baseURL, viewport: { width: 640, height: 400 }, deviceScaleFactor: 2 });
     const page = await context.newPage();

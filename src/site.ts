@@ -30,6 +30,9 @@ export const ui = {
   },
 } as const;
 
+// Month abbreviations for gutter dates, as in the CV (Intl may give "Sept").
+export const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] as const;
+
 // Paper link labels, in the order they are shown.
 export const paperLinks = [
   ['arxiv', 'arXiv'],
