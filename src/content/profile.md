@@ -28,4 +28,4 @@ I'm a third-year Computer Engineering student at Politecnico di Torino. I work o
 
 From March to October 2026 I was a visiting researcher in Gramoz Goranci's group at the University of Vienna. There I built, as far as we know, the first implementation of the fully dynamic spectral sparsifier of Abraham et al. (FOCS 2016), and then worked with the group on a new one based on low-diameter decompositions.
 
-I expect to graduate in July 2027. Outside of research I like hiking, karting and bowling. [CHECK: hobbies line, keep or cut]
+I expect to graduate in July 2027. Outside of research I like hiking, karting and bowling.

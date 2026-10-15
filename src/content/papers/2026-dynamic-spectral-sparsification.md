@@ -13,4 +13,4 @@ venue: ""              # leave empty while under review
 links: {}              # add arxiv / pdf / code / slides only once public
 ---
 
-I built the implementations and led the experimental part. [CHECK: keep this line about your role, or cut it]
+I built the implementations and led the experimental part.

@@ -186,6 +186,14 @@ test.describe('page', () => {
     await expect(page.locator('a[href="/"]')).toHaveText('Go to the home page');
   });
 
+  test('the CV link serves the PDF', async ({ page, request }) => {
+    await page.goto('/');
+    const href = await page.getByRole('link', { name: 'CV', exact: true }).getAttribute('href');
+    const response = await request.get(href ?? '');
+    expect(response.status()).toBe(200);
+    expect(response.headers()['content-type']).toBe('application/pdf');
+  });
+
   test('favicon, robots.txt and sitemap', async ({ request }) => {
     expect((await request.get('/favicon.svg')).status()).toBe(200);
     const robots = await (await request.get('/robots.txt')).text();
