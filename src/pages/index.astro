@@ -77,20 +77,6 @@ const jsonLd = {
       </div>
     </section>
 
-    {now.length > 0 && (
-      <Section id="h-now" title={ui.sections.now}>
-        {now.map(({ data, rendered }) => (
-          <Entry
-            when={gutterDate(data.start, data.end)}
-            title={data.title}
-            meta={`${ui.with} ${data.with}, ${data.institution}`}
-          >
-            <Fragment set:html={bodyHtml(rendered)} />
-          </Entry>
-        ))}
-      </Section>
-    )}
-
     {papers.length > 0 && (
       <Section id="h-pub" title={ui.sections.papers}>
         {papers.map(({ data, rendered }) => {
@@ -116,6 +102,20 @@ const jsonLd = {
         {papers.some((paper) => paper.data.alphabetical) && (
           <div class="row"><p class="main note">{ui.alphabeticalNote}</p></div>
         )}
+      </Section>
+    )}
+
+    {now.length > 0 && (
+      <Section id="h-now" title={ui.sections.now}>
+        {now.map(({ data, rendered }) => (
+          <Entry
+            when={gutterDate(data.start, data.end)}
+            title={data.title}
+            meta={`${ui.with} ${data.with}, ${data.institution}`}
+          >
+            <Fragment set:html={bodyHtml(rendered)} />
+          </Entry>
+        ))}
       </Section>
     )}
 

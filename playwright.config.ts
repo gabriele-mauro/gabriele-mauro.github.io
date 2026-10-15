@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 // Tests run against the built site (run `npm run build` first), served like GitHub Pages serves it,
-// or against a live URL:  BASE_URL=https://gale4409.github.io npm run test:a11y
+// or against a live URL:  BASE_URL=https://gabriele-mauro.github.io npm run test:a11y
 const live = process.env.BASE_URL;
 
 export default defineConfig({

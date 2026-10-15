@@ -164,16 +164,16 @@ test.describe('page', () => {
     await expect(page).toHaveTitle('Gabriele Mauro');
     const meta = (selector: string) => page.locator(selector).getAttribute('content');
     expect(await meta('meta[name="description"]')).toMatch(/^Computer Engineering student/);
-    expect(await page.locator('link[rel="canonical"]').getAttribute('href')).toBe('https://gale4409.github.io/');
+    expect(await page.locator('link[rel="canonical"]').getAttribute('href')).toBe('https://gabriele-mauro.github.io/');
     expect(await meta('meta[property="og:type"]')).toBe('profile');
-    expect(await meta('meta[property="og:url"]')).toBe('https://gale4409.github.io/');
+    expect(await meta('meta[property="og:url"]')).toBe('https://gabriele-mauro.github.io/');
     expect(await meta('meta[property="og:title"]')).toBe('Gabriele Mauro');
     expect(await meta('meta[name="twitter:card"]')).toBe('summary');
     const ld = JSON.parse((await page.locator('script[type="application/ld+json"]').textContent()) ?? '{}');
     expect(ld).toMatchObject({
       '@type': 'Person',
       name: 'Gabriele Mauro',
-      url: 'https://gale4409.github.io/',
+      url: 'https://gabriele-mauro.github.io/',
       affiliation: { name: 'Politecnico di Torino' },
       sameAs: ['https://github.com/Gale4409', 'https://www.linkedin.com/in/gabriele-mauro2004'],
     });
@@ -197,8 +197,8 @@ test.describe('page', () => {
   test('favicon, robots.txt and sitemap', async ({ request }) => {
     expect((await request.get('/favicon.svg')).status()).toBe(200);
     const robots = await (await request.get('/robots.txt')).text();
-    expect(robots).toContain('Sitemap: https://gale4409.github.io/sitemap-index.xml');
+    expect(robots).toContain('Sitemap: https://gabriele-mauro.github.io/sitemap-index.xml');
     const sitemap = await (await request.get('/sitemap-0.xml')).text();
-    expect(sitemap.match(/<loc>[^<]*<\/loc>/g)).toEqual(['<loc>https://gale4409.github.io/</loc>']);
+    expect(sitemap.match(/<loc>[^<]*<\/loc>/g)).toEqual(['<loc>https://gabriele-mauro.github.io/</loc>']);
   });
 });

@@ -2,7 +2,7 @@
 
 A one-page personal academic website, plus a CV PDF. Gabriele is an undergraduate in Computer Engineering at Politecnico di Torino who does research on dynamic graph algorithms. The main readers are professors who open the link from an email and look for about 30 seconds, admissions and scholarship panels, and internship reviewers.
 
-Live URL: https://gale4409.github.io (GitHub user `Gale4409`, repo `Gale4409.github.io`).
+Live URL: https://gabriele-mauro.github.io (GitHub organization `gabriele-mauro`, owned by the user `Gale4409`; repo `gabriele-mauro/gabriele-mauro.github.io`). The site's GitHub link points to the personal account, github.com/Gale4409.
 
 ## Hard rules
 
@@ -31,7 +31,7 @@ Live URL: https://gale4409.github.io (GitHub user `Gale4409`, repo `Gale4409.git
 CLAUDE.md
 README.md                  short, generic "how to update" notes (public)
 .nvmrc
-astro.config.mjs           site: https://gale4409.github.io
+astro.config.mjs           site: https://gabriele-mauro.github.io
 design/mockup.html         visual reference; the built page must match it
 private/                   GITIGNORED: PRIVATE_RULES.md, denylist.txt, KICKOFF_PROMPT.md
 public/
@@ -72,7 +72,7 @@ tests/a11y.spec.ts
 Validate every collection with a schema so that a missing or misspelt field fails the build.
 
 - **profile.md**: `name`, `role`, `affiliation`, `description` (meta description), `interests` (string list), `emails` (list of `{label, address}`), `links` (list of `{label, url}`), `cv` (`{file, updated}` with `updated` as `YYYY-MM`). Body: the About text.
-- **now/**: `title`, `with`, `institution`, `start` (`YYYY-MM`), optional `end`, `order`. Body: one or two sentences.
+- **now/**: `title`, `with`, `institution`, `start` (`YYYY-MM`), optional `end`, `order`. Body: one or two sentences, or none.
 - **papers/**: `title`, `authors` (list, in the order given), `alphabetical` (bool), `year`, `status` (`under-review` | `preprint` | `to-appear` | `published`), `venue` (string, may be empty), `links` (optional `arxiv`, `pdf`, `code`, `slides`). Body: optional one-line note.
 - **teaching/**: `role`, `course`, `institution`, `start`, optional `end`, `order`.
 - **earlier/**: `title`, `years` (string), `order`, optional `items` (list of `{name, text, url}`). Body: short text.
@@ -81,11 +81,13 @@ Validate every collection with a schema so that a missing or misspelt field fail
 
 1. **Header.** Name as the only `h1`. Under it, two lines: `role`, then `affiliation`. A row of links: Email (mailto, first address), CV (PDF), then `links` in order. The sparsifier figure sits to the right on wide screens and above the name on narrow ones.
 2. **About.** The profile body, then an "Interests:" line built from `interests`, with the list in italics.
-3. **Current work** (`now/`, by `order`). Entry: date in the gutter (`2026–`), bold title, a "With {with}, {institution}" line in grey, then the body.
-4. **Publications** (`papers/`, newest first). Entry: year in the gutter, bold title, a "With …" line listing the co-authors in the given order without Gabriele's own name, joined with commas and a final "and". Then the status in italics ("Under review." / "Preprint." / "To appear in {venue}." / "{venue}."), then the note, then the links as plain words (arXiv, PDF, code, slides). If any paper has `alphabetical: true`, add one note under the section in small grey type: "Authors are listed in alphabetical order, as is usual in theoretical computer science."
-5. **Teaching** (`teaching/`). Date in the gutter, bold "{role}, {course}", institution in grey.
+3. **Publications** (`papers/`, newest first). Entry: year in the gutter, bold title, a "With …" line listing the co-authors in the given order without Gabriele's own name, joined with commas and a final "and". Then the status in italics ("Under review." / "Preprint." / "To appear in {venue}." / "{venue}."), then the note, then the links as plain words (arXiv, PDF, code, slides). If any paper has `alphabetical: true`, add one note under the section in small grey type: "Authors are listed in alphabetical order, as is usual in theoretical computer science."
+4. **Current work** (`now/`, by `order`). Entry: date in the gutter (`2026–`), bold title, a "With {with}, {institution}" line in grey, then the body (if any).
+5. **Teaching** (`teaching/`, by `order`). Date in the gutter, bold "{role}, {course}", institution in grey.
 6. **Before research** (`earlier/`, by `order`). Years in the gutter, bold title, body, then `items` as a plain list: linked name, comma, text.
 7. **Footer.** Both email addresses with their labels in brackets, and "Last updated {Month YYYY}", taken from the date of the latest git commit that touched `src/content/` or `public/cv/` (fall back to the build date if git history is unavailable).
+
+Gutter dates come from `start` and `end` (years only): an open role is `2026–`, a finished role within one calendar year is just `2026`, and a longer one is `2024–26`.
 
 Section headings are plain sentence-case `h2`s. Entry titles are `h3`. No numbering, no eyebrow labels, no icons, no cards, no arrows after links, no middle-dot separators.
 
@@ -156,7 +158,7 @@ A git `pre-push` hook (`.githooks/pre-push`, enabled by the `prepare` script thr
 | `npm run build` | content check (strict in CI), type check, `astro build`, then the content check on `dist/` |
 | `npm run preview` | serve `dist/` locally |
 | `npm run shots` | build, then screenshots of the site and of the mockup at 375 and 1280px, light and dark, into `.shots/` (gitignored) |
-| `npm run test:a11y` | Playwright on the built site: axe (375/1280px, light/dark, home and 404), keyboard, motion, widths 320–1920px, 200% zoom, console errors, third-party requests, quotes, head tags, the CV link. `BASE_URL=https://gale4409.github.io npm run test:a11y` runs the same tests on the live site |
+| `npm run test:a11y` | Playwright on the built site: axe (375/1280px, light/dark, home and 404), keyboard, motion, widths 320–1920px, 200% zoom, console errors, third-party requests, quotes, head tags, the CV link. `BASE_URL=https://gabriele-mauro.github.io npm run test:a11y` runs the same tests on the live site |
 | `npm run test:html` | html-validate on `dist/**/*.html` |
 | `npm run lighthouse` | Lighthouse CI on the built site (or `-- <url>` for a live URL), mobile and desktop, asserting the quality targets; reports in `.lighthouseci/` |
 
@@ -167,7 +169,7 @@ On WSL, `explorer.exe .shots` opens the screenshots folder in Windows.
 - `.github/workflows/deploy.yml`, following the current Astro "Deploy to GitHub Pages" guide: `actions/checkout` (with `fetch-depth: 0` so "Last updated" works), the official `withastro/action`, then `actions/deploy-pages`. Trigger on push to `main` and manually.
 - Pass `PRIVATE_DENYLIST` to the build step from the repository secret of the same name.
 - Repo Settings → Pages → Source: GitHub Actions.
-- After a deploy, open https://gale4409.github.io, run Lighthouse against it and report.
+- After a deploy, open https://gabriele-mauro.github.io, run Lighthouse against it and report.
 
 ## How Gabriele updates the site
 

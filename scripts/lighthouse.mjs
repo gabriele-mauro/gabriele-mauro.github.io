@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Lighthouse CI, mobile then desktop, with Playwright's Chromium.
-//   npm run lighthouse                                  the built site in dist/
-//   npm run lighthouse -- https://gale4409.github.io/   a live URL
+//   npm run lighthouse                                         the built site in dist/
+//   npm run lighthouse -- https://gabriele-mauro.github.io/    a live URL
 // Reports go to .lighthouseci/<mobile|desktop>/ (gitignored). Exits 1 if a target is missed.
 
 import { spawnSync } from 'node:child_process';

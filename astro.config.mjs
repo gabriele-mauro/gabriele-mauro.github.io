@@ -5,7 +5,7 @@ import { lastUpdatedMonth } from './scripts/last-updated.mjs';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://gale4409.github.io',
+  site: 'https://gabriele-mauro.github.io',
   integrations: [sitemap({ filter: (page) => !new URL(page).pathname.startsWith('/404') })],
   build: {
     inlineStylesheets: 'always',
