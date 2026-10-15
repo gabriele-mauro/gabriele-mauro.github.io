@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Runs before every git push and blocks it if the content check fails.
+# Enabled by `npm install` (the prepare script sets core.hooksPath to .githooks).
+set -e
+cd "$(git rev-parse --show-toplevel)"
+# Git may run hooks without the login shell's PATH: load the .nvmrc Node through nvm if needed.
+if ! command -v node >/dev/null 2>&1 && [ -s "$HOME/.nvm/nvm.sh" ]; then
+  . "$HOME/.nvm/nvm.sh" --no-use
+  nvm use --silent
+fi
+node scripts/check-content.mjs --strict
+node scripts/check-content.mjs --tracked

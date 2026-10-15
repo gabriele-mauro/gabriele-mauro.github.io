@@ -56,6 +56,7 @@ src/
   site.ts                  fixed UI text and constants
   styles/global.css
 tests/a11y.spec.ts
+.githooks/pre-push         runs the content check before every push
 .github/workflows/deploy.yml
 ```
 
@@ -83,7 +84,7 @@ Section headings are plain sentence-case `h2`s. Entry titles are `h3`. No number
 
 ## Fixed UI text
 
-These are the only strings allowed outside `src/content/`. They live in `src/site.ts`: "Email", "CV", "Interests:", "Current work", "Publications", "Teaching", "Before research", "With", "Under review.", "Preprint.", "To appear in", "Authors are listed in alphabetical order, as is usual in theoretical computer science.", "Last updated", "Skip to content", the figure's accessible title, and the 404 page text: "This page doesn't exist." with a link "Go to the home page".
+These are the only strings allowed outside `src/content/`. They live in `src/site.ts`: "Email", "CV", "Interests:", "Current work", "Publications", "Teaching", "Before research", "With", "Under review.", "Preprint.", "To appear in", "Authors are listed in alphabetical order, as is usual in theoretical computer science.", "Last updated", "Skip to content", the figure's accessible title, and the 404 page text: "This page doesn't exist." with a link "Go to the home page". Also the words the page structure above already names: "and" (before the last name in a "With …" line) and the paper link labels "arXiv", "PDF", "code", "slides".
 
 ## Design
 
@@ -104,6 +105,8 @@ Match `design/mockup.html`. These are its tokens.
 Dark mode follows `prefers-color-scheme` only. No toggle, no JavaScript. Set `color-scheme: light dark`.
 
 **Type.** STIX Two Text everywhere. Body 17px (`1.0625rem`), line-height 1.6, old-style proportional figures. Gutter dates use old-style tabular figures. Scale: name `2.15rem`/600, `h2` `1.25rem`/600, `h3` body size/600, small text `0.9rem`. Links in `--edge`, 1px underline offset `0.18em`, 2px on hover, visible focus ring (2px `--edge`, offset 3px).
+
+**Quotes.** Astro's smart punctuation stays on for Markdown bodies. Frontmatter strings and fixed UI text shown on the page (including meta tags and JSON-LD) go through the same quote transform when rendered, so no straight quote or apostrophe appears anywhere on the page. Never edit the content files for this.
 
 **Layout.** One centred column: `max-width: calc(6.75rem + 38rem)`, side padding `1.25rem`, top padding `4.5rem`. A two-column grid on every row: a `6.75rem` gutter that holds right-aligned dates, then the text column. All text shares one left edge. Sections `3rem` apart, entries `1.35rem`. Below `40rem` the gutter collapses: dates go above their entry, left-aligned, and the figure moves above the name at `10rem` wide.
 
@@ -127,13 +130,14 @@ Dark mode follows `prefers-color-scheme` only. No toggle, no JavaScript. Set `co
 
 It runs before every build and in CI. It reports file, line and rule, and exits 1 on any failure.
 
-- **Scope:** `src/` text files; the built `dist/**/*.html` (after the build); the text of `public/cv/*.pdf`; and, with `--tracked`, every git-tracked text file except lockfiles (phone numbers and private patterns only).
+- **Scope:** `src/` text files; the built `dist/**/*.html` (after the build, with `--dist`); the text, link targets and metadata of `public/cv/*.pdf` (a PDF with no extractable text fails); and, with `--tracked`, every git-tracked text file except lockfiles (phone numbers and private patterns only). Paths given on the command line are checked instead, as site text (a PDF as a CV); this is for testing the check itself.
 - **`[CHECK`:** looked for only in `src/content/` and `dist/` (the highlighting code itself may mention it). A warning by default; a failure with `--strict`. The build script uses strict mode when `CI=true`.
 - **Phone numbers** (in all scopes, including the CV): `\+39[\s.-]?\d{2,3}[\s.-]?\d{3}[\s.-]?\d{3,4}` and `\b3\d{2}[\s.-]?\d{3}[\s.-]?\d{4}\b`.
 - **Wording**, in site text only (not the CV, not CLAUDE.md or README.md): "first-ever", "first author" / "first-author", `top \d+ ?%`, "ranked", "non-profit", and the degree called Computer Science, e.g. `\b(B\.?\s?Sc|Bachelor|degree|student|undergraduate)\b[^.\n]{0,40}\bComputer Science\b` and `\bComputer Science (student|undergraduate|degree)\b`. The lower-case phrase "theoretical computer science" in the authors note is allowed.
-- **Private patterns:** regexes, one per line (case-insensitive, `#` lines are comments), read from `private/denylist.txt` locally or from the `PRIVATE_DENYLIST` environment variable in CI. If neither is present, print a warning but do not fail.
+- **Private patterns:** regexes, one per line (case-insensitive, `#` lines are comments), read from `private/denylist.txt` locally or from the `PRIVATE_DENYLIST` environment variable in CI. If neither is present, print a warning but do not fail. A line starting with `@site ` applies only to site text: `src/`, `dist/` and, with `--tracked`, every tracked text file. It never applies to the CV PDF. Hits are reported by denylist line number, never by pattern.
+- **CI logs are public.** When `CI=true`, phone and private-pattern hits show file and line but not the matched text.
 
-A git `pre-push` hook, installed by the `prepare` script, runs `check-content --strict` and then `check-content --tracked`.
+A git `pre-push` hook (`.githooks/pre-push`, enabled by the `prepare` script through `core.hooksPath`) runs `check-content --strict` and then `check-content --tracked`.
 
 ## Commands
 
