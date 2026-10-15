@@ -10,6 +10,8 @@ private/
 lighthouse-reports/
 test-results/
 playwright-report/
+# Chrome profiles Lighthouse can create on WSL when run from the repo root
+/C:*
 .env
 .env.*
 *.local

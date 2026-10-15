@@ -19,11 +19,11 @@ Live URL: https://gale4409.github.io (GitHub user `Gale4409`, repo `Gale4409.git
 ## Stack
 
 - Astro, latest stable, static output, TypeScript strict. Ships zero client JavaScript (no framework islands). Before using any API, check the current Astro docs instead of relying on memory.
-- Plain CSS in one global stylesheet with custom properties. No Tailwind, no UI kit, no theme.
+- Plain CSS in one global stylesheet with custom properties, inlined into each page (`build.inlineStylesheets: 'always'`). No Tailwind, no UI kit, no theme.
 - Font: STIX Two Text, self-hosted with `@fontsource-variable/stix-two-text`, latin subset only, normal and italic. No requests to Google Fonts or any other third party at runtime.
 - `@astrojs/sitemap`. Nothing else unless Gabriele agrees.
 - Node version pinned in `.nvmrc` (the version current Astro requires); lockfile committed.
-- Dev and test tools (dev dependencies only): Playwright, `@axe-core/playwright`, Lighthouse CI (`@lhci/cli`), a small PDF text extractor that runs in Node without system packages (for checking the CV).
+- Dev and test tools (dev dependencies only): Playwright, `@axe-core/playwright`, Lighthouse CI (`@lhci/cli`), `unpdf` (a small PDF text extractor that runs in Node without system packages, for checking the CV), `@astrojs/check` and `typescript` (type check in every build and in CI), `html-validate`.
 
 ## Folder structure
 
@@ -42,6 +42,10 @@ scripts/
   check-content.mjs        the content check (below)
   shots.mjs                screenshots into .shots/
   last-updated.mjs         "Last updated" month from git, read by astro.config.mjs
+  serve-dist.mjs           serves dist/ like GitHub Pages (tests, screenshots)
+  lighthouse.mjs           Lighthouse CI, mobile and desktop (config: lighthouserc.cjs)
+playwright.config.ts       the tests run against the built site
+.htmlvalidate.json         html-validate, recommended preset
 src/
   content.config.ts        collection schemas
   content/
@@ -148,11 +152,13 @@ A git `pre-push` hook (`.githooks/pre-push`, enabled by the `prepare` script thr
 |---|---|
 | `npm run dev` | dev server; `[CHECK]` markers are highlighted |
 | `npm run check:content` | the content check on `src/` and the CV |
-| `npm run build` | check (strict in CI), `astro build`, then the check on `dist/` |
+| `npm run check:types` | `astro check` (TypeScript strict) |
+| `npm run build` | content check (strict in CI), type check, `astro build`, then the content check on `dist/` |
 | `npm run preview` | serve `dist/` locally |
 | `npm run shots` | build, then screenshots of the site and of the mockup at 375 and 1280px, light and dark, into `.shots/` (gitignored) |
-| `npm run test:a11y` | Playwright and axe on the built site |
-| `npm run lighthouse` | Lighthouse CI on the built site, mobile and desktop |
+| `npm run test:a11y` | Playwright on the built site: axe (375/1280px, light/dark, home and 404), keyboard, motion, widths 320–1920px, 200% zoom, console errors, third-party requests, quotes, head tags |
+| `npm run test:html` | html-validate on `dist/**/*.html` |
+| `npm run lighthouse` | Lighthouse CI on the built site (or `-- <url>` for a live URL), mobile and desktop, asserting the quality targets; reports in `.lighthouseci/` |
 
 On WSL, `explorer.exe .shots` opens the screenshots folder in Windows.
 

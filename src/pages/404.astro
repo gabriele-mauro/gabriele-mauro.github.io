@@ -1,0 +1,16 @@
+---
+import { smartQuotes } from '../format';
+import Base from '../layouts/Base.astro';
+import { ui } from '../site';
+
+const text = smartQuotes(ui.notFound.text);
+---
+
+<Base title={text} noindex>
+  <main id="content" class="row">
+    <div class="main">
+      <h1>{text}</h1>
+      <p><a href="/">{ui.notFound.link}</a></p>
+    </div>
+  </main>
+</Base>

@@ -6,9 +6,10 @@ import { ui } from '../site';
 interface Props {
   title: string;
   description?: string;
+  noindex?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, noindex = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -18,7 +19,10 @@ const { title, description } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href={fontLatinNormal} as="font" type="font/woff2" crossorigin />
+    <slot name="head" />
   </head>
   <body>
     <a class="skip" href="#content">{ui.skipLink}</a>

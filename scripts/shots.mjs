@@ -2,49 +2,16 @@
 // Screenshots of the built site (dist/) and of design/mockup.html at 375 and 1280px, light and
 // dark, into .shots/. Run through `npm run shots`, which builds first.
 
-import { createServer } from 'node:http';
 import { existsSync } from 'node:fs';
-import { mkdir, readFile } from 'node:fs/promises';
-import { dirname, extname, join, normalize, resolve } from 'node:path';
+import { mkdir } from 'node:fs/promises';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { chromium } from '@playwright/test';
+import { serveDist } from './serve-dist.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
 const out = join(root, '.shots');
-
-const TYPES = {
-  '.html': 'text/html; charset=utf-8',
-  '.css': 'text/css',
-  '.js': 'text/javascript',
-  '.svg': 'image/svg+xml',
-  '.woff2': 'font/woff2',
-  '.pdf': 'application/pdf',
-  '.xml': 'application/xml',
-  '.txt': 'text/plain; charset=utf-8',
-  '.png': 'image/png',
-  '.ico': 'image/x-icon',
-};
-
-// A minimal static server for dist/, like GitHub Pages: /x/ serves /x/index.html, misses get 404.html.
-export function serveDist(port = 0) {
-  const server = createServer(async (req, res) => {
-    const path = decodeURIComponent(new URL(req.url ?? '/', 'http://x').pathname);
-    let file = normalize(join(dist, path));
-    if (!file.startsWith(dist)) return res.writeHead(403).end();
-    if (path.endsWith('/')) file = join(file, 'index.html');
-    try {
-      const body = await readFile(file);
-      res.writeHead(200, { 'content-type': TYPES[extname(file)] ?? 'application/octet-stream' });
-      res.end(body);
-    } catch {
-      const notFound = join(dist, '404.html');
-      res.writeHead(404, { 'content-type': TYPES['.html'] });
-      res.end(existsSync(notFound) ? await readFile(notFound) : 'Not found');
-    }
-  });
-  return new Promise((ok) => server.listen(port, '127.0.0.1', () => ok(server)));
-}
 
 async function main() {
   if (!existsSync(join(dist, 'index.html'))) {

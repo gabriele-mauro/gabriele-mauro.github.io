@@ -9,18 +9,28 @@
   "scripts": {
     "dev": "astro dev",
     "check:content": "node scripts/check-content.mjs",
-    "build": "node scripts/check-content.mjs && astro build && node scripts/check-content.mjs --dist",
+    "check:types": "astro check",
+    "build": "node scripts/check-content.mjs && astro check && astro build && node scripts/check-content.mjs --dist",
     "preview": "astro preview",
     "shots": "npm run build && node scripts/shots.mjs",
+    "test:a11y": "playwright test",
+    "test:html": "html-validate \"dist/**/*.html\"",
+    "lighthouse": "node scripts/lighthouse.mjs",
     "astro": "astro",
     "prepare": "git config core.hooksPath .githooks || true"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
     "@fontsource-variable/stix-two-text": "^5.3.0",
     "astro": "^7.3.8"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@axe-core/playwright": "^4.13.0",
+    "@lhci/cli": "^0.15.1",
     "@playwright/test": "^1.64.1",
+    "html-validate": "^11.16.2",
+    "typescript": "^6.0.3",
     "unpdf": "^1.8.1"
   }
 }
