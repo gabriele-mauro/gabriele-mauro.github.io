@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import fontLatinNormal from '@fontsource-variable/stix-two-text/files/stix-two-text-latin-wght-normal.woff2?url';
+import { ui } from '../site';
 
 interface Props {
   title: string;
@@ -20,6 +21,9 @@ const { title, description } = Astro.props;
     <link rel="preload" href={fontLatinNormal} as="font" type="font/woff2" crossorigin />
   </head>
   <body>
-    <slot />
+    <a class="skip" href="#content">{ui.skipLink}</a>
+    <div class="page">
+      <slot />
+    </div>
   </body>
 </html>

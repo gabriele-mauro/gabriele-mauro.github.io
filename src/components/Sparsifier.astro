@@ -1,0 +1,46 @@
+---
+// The one decorative element (copied from design/mockup.html). On load the dropped edges fade
+// and the kept edges turn --edge and thicken to their weights; the CSS is in global.css.
+import { ui } from '../site';
+---
+
+<svg class="sparsifier" viewBox="0 0 204 128" role="img" aria-labelledby="fig-t">
+  <title id="fig-t">{ui.figureTitle}</title>
+  <g>
+    <line class="e drop" x1="18" y1="70" x2="58" y2="100" />
+    <line class="e drop" x1="18" y1="70" x2="92" y2="58" />
+    <line class="e drop" x1="52" y1="24" x2="58" y2="100" />
+    <line class="e drop" x1="52" y1="24" x2="104" y2="12" />
+    <line class="e drop" x1="58" y1="100" x2="92" y2="58" />
+    <line class="e drop" x1="92" y1="58" x2="104" y2="12" />
+    <line class="e drop" x1="104" y1="12" x2="184" y2="20" />
+    <line class="e drop" x1="120" y1="106" x2="146" y2="48" />
+    <line class="e drop" x1="146" y1="48" x2="160" y2="94" />
+    <line class="e drop" x1="146" y1="48" x2="184" y2="20" />
+    <line class="e drop" x1="160" y1="94" x2="188" y2="72" />
+    <line class="e drop" x1="92" y1="58" x2="160" y2="94" />
+    <line class="e drop" x1="52" y1="24" x2="146" y2="48" />
+    <line class="e keep w2" x1="18" y1="70" x2="52" y2="24" />
+    <line class="e keep w15" x1="18" y1="70" x2="58" y2="100" />
+    <line class="e keep w2" x1="52" y1="24" x2="92" y2="58" />
+    <line class="e keep w2" x1="58" y1="100" x2="120" y2="106" />
+    <line class="e keep w15" x1="92" y1="58" x2="120" y2="106" />
+    <line class="e keep w3" x1="92" y1="58" x2="146" y2="48" />
+    <line class="e keep w2" x1="104" y1="12" x2="146" y2="48" />
+    <line class="e keep w2" x1="120" y1="106" x2="160" y2="94" />
+    <line class="e keep w15" x1="146" y1="48" x2="188" y2="72" />
+    <line class="e keep w2" x1="184" y1="20" x2="188" y2="72" />
+  </g>
+  <g>
+    <circle cx="18" cy="70" r="3" />
+    <circle cx="52" cy="24" r="3" />
+    <circle cx="58" cy="100" r="3" />
+    <circle cx="92" cy="58" r="3" />
+    <circle cx="104" cy="12" r="3" />
+    <circle cx="120" cy="106" r="3" />
+    <circle cx="146" cy="48" r="3" />
+    <circle cx="160" cy="94" r="3" />
+    <circle cx="184" cy="20" r="3" />
+    <circle cx="188" cy="72" r="3" />
+  </g>
+</svg>

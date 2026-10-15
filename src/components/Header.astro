@@ -1,0 +1,29 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { ui } from '../site';
+import Sparsifier from './Sparsifier.astro';
+import Text from './Text.astro';
+
+interface Props {
+  profile: CollectionEntry<'profile'>['data'];
+}
+
+const { profile } = Astro.props;
+---
+
+<header class="row">
+  <div class="main">
+    <div>
+      <h1><Text value={profile.name} /></h1>
+      <p class="role"><Text value={profile.role} /><br /><Text value={profile.affiliation} /></p>
+      <ul class="links">
+        <li><a href={`mailto:${profile.emails[0].address}`}>{ui.email}</a></li>
+        <li><a href={profile.cv.file}>{ui.cv}</a></li>
+        {profile.links.map((link) => (
+          <li><a href={link.url}><Text value={link.label} /></a></li>
+        ))}
+      </ul>
+    </div>
+    <Sparsifier />
+  </div>
+</header>

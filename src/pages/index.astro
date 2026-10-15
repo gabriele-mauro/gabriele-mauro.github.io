@@ -1,7 +1,131 @@
 ---
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
+import Entry from '../components/Entry.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import Section from '../components/Section.astro';
+import Text from '../components/Text.astro';
+import { bodyHtml, gutterDate, inlineHtml, joinNames, smartQuotes } from '../format';
 import Base from '../layouts/Base.astro';
+import { paperLinks, ui } from '../site';
+
+const profileEntry = await getEntry('profile', 'profile');
+if (!profileEntry) throw new Error('src/content/profile.md is missing');
+const profile = profileEntry.data;
+
+const byOrder = (a: { data: { order: number } }, b: { data: { order: number } }) =>
+  a.data.order - b.data.order;
+const now = (await getCollection('now')).sort(byOrder);
+const papers = (await getCollection('papers')).sort(
+  (a, b) => b.data.year - a.data.year || b.id.localeCompare(a.id),
+);
+const teaching = (await getCollection('teaching')).sort(byOrder);
+const earlier = (await getCollection('earlier')).sort(byOrder);
+
+function paperStatus({ status, venue }: CollectionEntry<'papers'>['data']): string {
+  switch (status) {
+    case 'under-review':
+      return ui.status.underReview;
+    case 'preprint':
+      return ui.status.preprint;
+    case 'to-appear':
+      return `${ui.status.toAppear} ${venue}.`;
+    case 'published':
+      return `${venue}.`;
+  }
+}
+
+// Co-authors in the given order, without Gabriele's own name.
+function withLine(authors: string[]): string | undefined {
+  const others = authors.filter((name) => name !== profile.name);
+  return others.length ? `${ui.with} ${joinNames(others, ui.and)}` : undefined;
+}
 ---
 
-<Base title="Gabriele Mauro">
-  <main id="content"></main>
+<Base title={smartQuotes(profile.name)} description={smartQuotes(profile.description)}>
+  <Header profile={profile} />
+
+  <main id="content">
+    <section class="row about">
+      <div class="main">
+        <Fragment set:html={bodyHtml(profileEntry.rendered)} />
+        <p class="interests">{ui.interests} <em><Text value={`${profile.interests.join(', ')}.`} /></em></p>
+      </div>
+    </section>
+
+    {now.length > 0 && (
+      <Section id="h-now" title={ui.sections.now}>
+        {now.map(({ data, rendered }) => (
+          <Entry
+            when={gutterDate(data.start, data.end)}
+            title={data.title}
+            meta={`${ui.with} ${data.with}, ${data.institution}`}
+          >
+            <Fragment set:html={bodyHtml(rendered)} />
+          </Entry>
+        ))}
+      </Section>
+    )}
+
+    {papers.length > 0 && (
+      <Section id="h-pub" title={ui.sections.papers}>
+        {papers.map(({ data, rendered }) => {
+          const note = inlineHtml(rendered);
+          const links = paperLinks.filter(([key]) => data.links[key]);
+          return (
+            <Entry when={String(data.year)} title={data.title} meta={withLine(data.authors)}>
+              <p>
+                <span class="status"><Text value={paperStatus(data)} /></span>
+                {note && ' '}
+                {note && <Fragment set:html={note} />}
+              </p>
+              {links.length > 0 && (
+                <ul class="links">
+                  {links.map(([key, label]) => (
+                    <li><a href={data.links[key]}>{label}</a></li>
+                  ))}
+                </ul>
+              )}
+            </Entry>
+          );
+        })}
+        {papers.some((paper) => paper.data.alphabetical) && (
+          <div class="row"><p class="main note">{ui.alphabeticalNote}</p></div>
+        )}
+      </Section>
+    )}
+
+    {teaching.length > 0 && (
+      <Section id="h-teach" title={ui.sections.teaching}>
+        {teaching.map(({ data }) => (
+          <Entry
+            when={gutterDate(data.start, data.end)}
+            title={`${data.role}, ${data.course}`}
+            meta={data.institution}
+          />
+        ))}
+      </Section>
+    )}
+
+    {earlier.length > 0 && (
+      <Section id="h-before" title={ui.sections.earlier}>
+        {earlier.map(({ data, rendered }) => (
+          <Entry when={data.years} title={data.title}>
+            <Fragment set:html={bodyHtml(rendered)} />
+            {data.items && (
+              <ul class="projects">
+                {data.items.map((item) => (
+                  <li>
+                    <a href={item.url}><Text value={item.name} /></a>{', '}<Text value={item.text} />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Entry>
+        ))}
+      </Section>
+    )}
+  </main>
+
+  <Footer emails={profile.emails} />
 </Base>

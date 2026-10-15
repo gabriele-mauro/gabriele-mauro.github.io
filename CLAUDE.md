@@ -41,6 +41,7 @@ public/
 scripts/
   check-content.mjs        the content check (below)
   shots.mjs                screenshots into .shots/
+  last-updated.mjs         "Last updated" month from git, read by astro.config.mjs
 src/
   content.config.ts        collection schemas
   content/
@@ -49,7 +50,9 @@ src/
     papers/*.md
     teaching/*.md
     earlier/*.md
-  components/              Header, Sparsifier, Section, Entry, Footer
+  components/              Header, Sparsifier, Section, Entry, Footer, Text (a frontmatter string:
+                           quotes, and [CHECK] marks in dev)
+  format.ts                quotes, gutter dates, name lists, dev [CHECK] marks
   layouts/Base.astro
   pages/index.astro
   pages/404.astro
@@ -147,7 +150,7 @@ A git `pre-push` hook (`.githooks/pre-push`, enabled by the `prepare` script thr
 | `npm run check:content` | the content check on `src/` and the CV |
 | `npm run build` | check (strict in CI), `astro build`, then the check on `dist/` |
 | `npm run preview` | serve `dist/` locally |
-| `npm run shots` | screenshots at 375 and 1280px, light and dark, into `.shots/` (gitignored) |
+| `npm run shots` | build, then screenshots of the site and of the mockup at 375 and 1280px, light and dark, into `.shots/` (gitignored) |
 | `npm run test:a11y` | Playwright and axe on the built site |
 | `npm run lighthouse` | Lighthouse CI on the built site, mobile and desktop |
 

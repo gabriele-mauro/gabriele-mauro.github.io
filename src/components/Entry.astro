@@ -1,0 +1,21 @@
+---
+// One entry: the date in the gutter, a bold title, an optional grey line, then the slot.
+import Text from './Text.astro';
+
+interface Props {
+  when: string;
+  title: string;
+  meta?: string;
+}
+
+const { when, title, meta } = Astro.props;
+---
+
+<div class="row entry">
+  <div class="when"><Text value={when} /></div>
+  <div class="main">
+    <h3><Text value={title} /></h3>
+    {meta && <p class="meta"><Text value={meta} /></p>}
+    <slot />
+  </div>
+</div>

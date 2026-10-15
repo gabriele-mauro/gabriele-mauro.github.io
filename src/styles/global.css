@@ -65,4 +65,99 @@ a { color: var(--edge); text-decoration-thickness: 1px; text-underline-offset: 0
 a:hover { text-decoration-thickness: 2px; }
 a:focus-visible { outline: 2px solid var(--edge); outline-offset: 3px; border-radius: 2px; }
 
+.skip { position: absolute; left: -999px; }
+.skip:focus { left: 1rem; top: 1rem; background: var(--paper); padding: .4rem .7rem; }
+
+/* Page grid: dates hang in a left gutter, text keeps one clean left edge. */
+.page {
+  max-width: calc(var(--gutter) + var(--measure));
+  margin: 0 auto;
+  padding: 4.5rem 1.25rem 3rem;
+}
+.row {
+  display: grid;
+  grid-template-columns: var(--gutter) minmax(0, 1fr);
+}
+.row > .main { grid-column: 2; }
+.when {
+  grid-column: 1;
+  color: var(--graphite);
+  font-size: var(--step--1);
+  font-variant-numeric: oldstyle-nums tabular-nums;
+  padding-top: .12rem;
+  padding-right: 1.25rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Header */
+header .main {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+header .main > div { flex: 1 1 auto; min-width: 0; }
+h1 {
+  font-size: var(--step-3);
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 .35rem;
+}
+.role { margin: 0; color: var(--graphite); line-height: 1.45; }
+.links { margin: .9rem 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: .35rem 1.15rem; }
+
+/* The sparsifier: on load the dropped edges fade, the kept edges darken and thicken
+   (reweighted), once. The only animation on the site. */
+.sparsifier { width: 11.5rem; height: auto; flex: none; margin-bottom: .35rem; }
+.sparsifier .e { stroke: var(--graphite); stroke-width: 1; stroke-linecap: round; }
+.sparsifier .drop { animation: drop 1.4s ease-in-out .5s both; }
+.sparsifier .keep { animation: keep 1.4s ease-in-out .5s both; }
+.sparsifier .w2 { --w: 2.1; } .sparsifier .w3 { --w: 3; } .sparsifier .w15 { --w: 1.6; }
+.sparsifier circle { fill: var(--ink); }
+@keyframes drop { to { stroke: var(--edge-faint); } }
+@keyframes keep { to { stroke: var(--edge); stroke-width: var(--w, 2); } }
+@media (prefers-reduced-motion: reduce) {
+  .sparsifier .drop, .sparsifier .keep { animation-duration: 1ms; animation-delay: 0s; }
+}
+
+/* Sections */
+section { margin-top: 3rem; }
+h2 {
+  font-size: var(--step-1);
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0 0 1rem;
+}
+.about p { margin: 0 0 1em; max-width: var(--measure); }
+.interests { color: var(--graphite); }
+.interests em { color: var(--ink); font-style: italic; }
+
+.entry { margin-bottom: 1.35rem; }
+.entry:last-child { margin-bottom: 0; }
+.entry h3 { font-size: var(--step-0); font-weight: 600; margin: 0; line-height: 1.45; }
+.entry p { margin: .15rem 0 0; }
+.entry .links { margin-top: .15rem; }
+.meta { color: var(--graphite); }
+.status { font-style: italic; color: var(--graphite); }
+.entry + .row .note { margin-top: .9rem; }
+.note { color: var(--graphite); font-size: var(--step--1); margin: 0; max-width: var(--measure); }
+.projects { margin: .35rem 0 0; padding: 0; list-style: none; }
+.projects li { margin: .1rem 0; }
+
+footer { margin-top: 3.5rem; color: var(--graphite); font-size: var(--step--1); }
+footer .main { padding-top: 1.25rem; border-top: 1px solid var(--hairline); }
+footer p { margin: .2rem 0; }
+
+/* [CHECK] notes, highlighted in dev only */
 mark.check { background: var(--mark); color: inherit; padding: 0 .15em; }
+
+@media (max-width: 40rem) {
+  .page { padding-top: 2.5rem; }
+  .row { grid-template-columns: minmax(0, 1fr); }
+  .row > .main { grid-column: 1; }
+  .when { grid-column: 1; text-align: left; padding: 0; }
+  header .main { flex-direction: column-reverse; align-items: flex-start; gap: 1.25rem; }
+  .sparsifier { width: 10rem; }
+}

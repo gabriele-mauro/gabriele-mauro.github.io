@@ -1,0 +1,26 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { lastUpdated } from '../format';
+import { ui } from '../site';
+import Text from './Text.astro';
+
+interface Props {
+  emails: CollectionEntry<'profile'>['data']['emails'];
+}
+
+const { emails } = Astro.props;
+---
+
+<footer class="row">
+  <div class="main">
+    <p>
+      {emails.map((email, i) => (
+        <>
+          {i > 0 && '   '}
+          <a href={`mailto:${email.address}`}>{email.address}</a>{' ('}<Text value={email.label} />{')'}
+        </>
+      ))}
+    </p>
+    <p>{ui.lastUpdated} {lastUpdated()}</p>
+  </div>
+</footer>

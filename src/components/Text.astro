@@ -1,0 +1,12 @@
+---
+// A frontmatter or UI string on the page: typographic quotes, and [CHECK] marks in dev.
+import { escapeHtml, markChecks, smartQuotes } from '../format';
+
+interface Props {
+  value: string;
+}
+
+const html = markChecks(escapeHtml(smartQuotes(Astro.props.value)));
+---
+
+<Fragment set:html={html} />
