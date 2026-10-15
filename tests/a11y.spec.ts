@@ -86,10 +86,10 @@ test.describe('motion', () => {
     for (const t of timings) expect(t).toEqual({ inFigure: true, duration: 1400, delay: 500, iterations: 1 });
   });
 
-  test('reduced motion shows the end state immediately', async ({ browser }) => {
-    const context = await browser.newContext({ reducedMotion: 'reduce' });
+  test('reduced motion shows the end state immediately', async ({ browser, baseURL }) => {
+    const context = await browser.newContext({ baseURL, reducedMotion: 'reduce' });
     const page = await context.newPage();
-    await page.goto('http://127.0.0.1:4322/');
+    await page.goto('/');
     await page.waitForTimeout(100);
     const edge = await page.evaluate(() => {
       const s = getComputedStyle(document.querySelector('.sparsifier .keep.w3')!);
@@ -111,10 +111,10 @@ test.describe('layout', () => {
     });
   }
 
-  test('200% zoom (1280px window): no horizontal scroll, text at full size, mobile layout', async ({ browser }) => {
-    const context = await browser.newContext({ viewport: { width: 640, height: 400 }, deviceScaleFactor: 2 });
+  test('200% zoom (1280px window): no horizontal scroll, text at full size, mobile layout', async ({ browser, baseURL }) => {
+    const context = await browser.newContext({ baseURL, viewport: { width: 640, height: 400 }, deviceScaleFactor: 2 });
     const page = await context.newPage();
-    await page.goto('http://127.0.0.1:4322/');
+    await page.goto('/');
     await settle(page);
     const r = await page.evaluate(() => ({
       overflow: document.documentElement.scrollWidth - innerWidth,
@@ -127,7 +127,7 @@ test.describe('layout', () => {
 });
 
 test.describe('page', () => {
-  test('no console errors and no third-party requests', async ({ page }) => {
+  test('no console errors and no third-party requests', async ({ page, baseURL }) => {
     const errors: string[] = [];
     const origins = new Set<string>();
     page.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
@@ -136,7 +136,7 @@ test.describe('page', () => {
     await page.goto('/');
     await settle(page);
     expect(errors).toEqual([]);
-    expect([...origins]).toEqual(['http://127.0.0.1:4322']);
+    expect([...origins]).toEqual([new URL(baseURL ?? '').origin]);
   });
 
   test('no straight quotes or apostrophes in the text, title or meta tags', async ({ page }) => {

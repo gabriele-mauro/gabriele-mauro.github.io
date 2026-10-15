@@ -156,7 +156,7 @@ A git `pre-push` hook (`.githooks/pre-push`, enabled by the `prepare` script thr
 | `npm run build` | content check (strict in CI), type check, `astro build`, then the content check on `dist/` |
 | `npm run preview` | serve `dist/` locally |
 | `npm run shots` | build, then screenshots of the site and of the mockup at 375 and 1280px, light and dark, into `.shots/` (gitignored) |
-| `npm run test:a11y` | Playwright on the built site: axe (375/1280px, light/dark, home and 404), keyboard, motion, widths 320–1920px, 200% zoom, console errors, third-party requests, quotes, head tags |
+| `npm run test:a11y` | Playwright on the built site: axe (375/1280px, light/dark, home and 404), keyboard, motion, widths 320–1920px, 200% zoom, console errors, third-party requests, quotes, head tags, the CV link. `BASE_URL=https://gale4409.github.io npm run test:a11y` runs the same tests on the live site |
 | `npm run test:html` | html-validate on `dist/**/*.html` |
 | `npm run lighthouse` | Lighthouse CI on the built site (or `-- <url>` for a live URL), mobile and desktop, asserting the quality targets; reports in `.lighthouseci/` |
 
