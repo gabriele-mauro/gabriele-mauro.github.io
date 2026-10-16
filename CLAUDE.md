@@ -81,7 +81,7 @@ Validate every collection with a schema so that a missing or misspelt field fail
 
 1. **Header.** Name as the only `h1`. Under it, two lines: `role`, then `affiliation`. A row of links: Email (mailto, first address), CV (PDF), then `links` in order. The sparsifier figure sits to the right on wide screens and above the name on narrow ones.
 2. **About.** The profile body, then an "Interests:" line built from `interests`, with the list in italics.
-3. **Publications** (`papers/`, newest first). Entry: year in the gutter, bold title, a "With …" line listing the co-authors in the given order without Gabriele's own name, joined with commas and a final "and". Then the status in italics ("Under review." / "Preprint." / "To appear in {venue}." / "{venue}."), then the note, then the links as plain words (arXiv, PDF, code, slides). If any paper has `alphabetical: true`, add one note under the section in small grey type: "Authors are listed in alphabetical order, as is usual in theoretical computer science."
+3. **Publications** (`papers/`, newest first). Entry: year in the gutter, bold title, then all the authors in the given order, Gabriele included, joined with commas and a final "and", in grey and without "With" (the alphabetical-order note refers to this list). Then the status in italics ("Under review." / "Preprint." / "To appear in {venue}." / "{venue}."), then the note, then the links as plain words (arXiv, PDF, code, slides). If any paper has `alphabetical: true`, add one note under the section in small grey type: "Authors are listed in alphabetical order, as is usual in theoretical computer science."
 4. **Current work** (`now/`, by `order`). Entry: date in the gutter (`Oct 2026 –`), bold title, a "With {with}, {institution}" line in grey, then the body (if any).
 5. **Teaching** (`teaching/`, by `order`). Date in the gutter, bold "{role}, {course}", institution in grey.
 6. **Before research** (`earlier/`, by `order`). Years in the gutter, bold title, body, then `items` as a plain list: linked name, comma, text.
@@ -93,7 +93,7 @@ Section headings are plain sentence-case `h2`s. Entry titles are `h3`. No number
 
 ## Fixed UI text
 
-These are the only strings allowed outside `src/content/`. They live in `src/site.ts`: "Email", "CV", "Interests:", "Current work", "Publications", "Teaching", "Before research", "With", "Under review.", "Preprint.", "To appear in", "Authors are listed in alphabetical order, as is usual in theoretical computer science.", "Last updated", "Skip to content", the figure's accessible title, and the 404 page text: "This page doesn't exist." with a link "Go to the home page". Also the words the page structure above already names: "and" (before the last name in a "With …" line), the paper link labels "arXiv", "PDF", "code", "slides", and the month abbreviations "Jan" to "Dec" in gutter dates.
+These are the only strings allowed outside `src/content/`. They live in `src/site.ts`: "Email", "CV", "Interests:", "Current work", "Publications", "Teaching", "Before research", "With", "Under review.", "Preprint.", "To appear in", "Authors are listed in alphabetical order, as is usual in theoretical computer science.", "Last updated", "Skip to content", the figure's accessible title, and the 404 page text: "This page doesn't exist." with a link "Go to the home page". Also the words the page structure above already names: "and" (before the last name in a list of names), the paper link labels "arXiv", "PDF", "code", "slides", and the month abbreviations "Jan" to "Dec" in gutter dates.
 
 ## Design
 

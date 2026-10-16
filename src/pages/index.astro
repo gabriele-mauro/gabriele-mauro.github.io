@@ -35,11 +35,6 @@ function paperStatus({ status, venue }: CollectionEntry<'papers'>['data']): stri
   }
 }
 
-// Co-authors in the given order, without Gabriele's own name.
-function withLine(authors: string[]): string | undefined {
-  const others = authors.filter((name) => name !== profile.name);
-  return others.length ? `${ui.with} ${joinNames(others, ui.and)}` : undefined;
-}
 
 const name = smartQuotes(profile.name);
 const description = smartQuotes(profile.description);
@@ -83,7 +78,7 @@ const jsonLd = {
           const note = inlineHtml(rendered);
           const links = paperLinks.filter(([key]) => data.links[key]);
           return (
-            <Entry when={String(data.year)} title={data.title} meta={withLine(data.authors)}>
+            <Entry when={String(data.year)} title={data.title} meta={joinNames(data.authors, ui.and)}>
               <p>
                 <span class="status"><Text value={paperStatus(data)} /></span>
                 {note && ' '}
