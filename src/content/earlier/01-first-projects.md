@@ -1,6 +1,5 @@
 ---
 title: First projects
-years: "Feb–Mar 2026"
 order: 1
 items:
   - name: DynaGraph

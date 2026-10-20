@@ -79,7 +79,7 @@ const earlier = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/earlier' }),
   schema: z.strictObject({
     title: text,
-    years: text,
+    years: text.optional(),
     order,
     items: z.array(z.strictObject({ name: text, text, url: webUrl })).optional(),
   }),

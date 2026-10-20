@@ -75,7 +75,7 @@ Validate every collection with a schema so that a missing or misspelt field fail
 - **now/**: `title`, `with`, `institution`, `start` (`YYYY-MM`), optional `end`, `order`. Body: one or two sentences, or none.
 - **papers/**: `title`, `authors` (list, in the order given), `alphabetical` (bool), `year`, `status` (`under-review` | `preprint` | `to-appear` | `published`), `venue` (string, may be empty), `links` (optional `arxiv`, `pdf`, `code`, `slides`). Body: optional one-line note.
 - **teaching/**: `role`, `course`, `institution`, `start`, optional `end`, `order`.
-- **earlier/**: `title`, `years` (string, shown as written, e.g. `Feb–Mar 2026` or `2020–22`), `order`, optional `items` (list of `{name, text, url}`). Body: short text.
+- **earlier/**: `title`, optional `years` (string, shown as written, e.g. `2020–22`; without it the entry has no gutter date), `order`, optional `items` (list of `{name, text, url}`). Body: short text.
 
 ## Page structure (one page, this order)
 
@@ -84,7 +84,7 @@ Validate every collection with a schema so that a missing or misspelt field fail
 3. **Publications** (`papers/`, newest first). Entry: year in the gutter, bold title, then all the authors in the given order, Gabriele included, joined with commas and a final "and", in grey and without "With" (the alphabetical-order note refers to this list). Then the status in italics ("Under review." / "Preprint." / "To appear in {venue}." / "{venue}."), then the note, then the links as plain words (arXiv, PDF, code, slides). If any paper has `alphabetical: true`, add one note under the section in small grey type: "Authors are listed in alphabetical order, as is usual in theoretical computer science."
 4. **Current work** (`now/`, by `order`). Entry: date in the gutter (`Oct 2026 –`), bold title, a "With {with}, {institution}" line in grey, then the body (if any).
 5. **Teaching** (`teaching/`, by `order`). Date in the gutter, bold "{role}, {course}", institution in grey.
-6. **Before research** (`earlier/`, by `order`). Years in the gutter, bold title, body, then `items` as a plain list: linked name, comma, text.
+6. **Before research** (`earlier/`, by `order`). Years in the gutter (if given), bold title, body, then `items` as a plain list: linked name, comma, text.
 7. **Footer.** Both email addresses with their labels in brackets, and "Last updated {Month YYYY}", taken from the date of the latest git commit that touched `src/content/` or `public/cv/` (fall back to the build date if git history is unavailable).
 
 Gutter dates come from `start` and `end`, in the CV's style: three-letter English months, en dashes, old-style tabular figures. An open role is `Oct 2026 –`, a finished one within one year is `Mar–Jul 2026`, one across years is `Sep 2024 – Jul 2027`. Papers show the year only. Every date must fit the gutter on one line (a test checks this at 375 and 1280px); the current dates fit the 6.75rem gutter, but a range across years would need about 8.75rem, so widen `--gutter` (the page max-width follows it) if one is added.
